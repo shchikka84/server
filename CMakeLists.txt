@@ -251,9 +251,6 @@ ENDIF()
 
 MY_CHECK_AND_SET_COMPILER_FLAG(-ggdb3 DEBUG)
 
-OPTION(ENABLED_LOCAL_INFILE
- "If we should should enable LOAD DATA LOCAL by default" ${IF_WIN})
-
 # Set DBUG_OFF and other optional release-only flags for non-debug project types
 FOREACH(BUILD_TYPE RELEASE RELWITHDEBINFO MINSIZEREL)
   FOREACH(LANG C CXX)
