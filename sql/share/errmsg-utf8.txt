@@ -7936,3 +7936,5 @@ ER_USER_IS_BLOCKED
 ER_ACCOUNT_HAS_BEEN_LOCKED
         eng "Access denied, this account is locked"
         rum "Acces refuzat, acest cont este blocat"
+ER_TOO_LONG_HASH_KEYSEG
+        eng "Max key segment length is 65535"
