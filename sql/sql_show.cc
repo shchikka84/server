@@ -2335,7 +2335,9 @@ int show_create_table(THD *thd, TABLE_LIST *table_list, String *packet,
       if (key_part->field &&
           (key_part->length !=
            table->field[key_part->fieldnr-1]->key_length() &&
-           !(key_info->flags & (HA_FULLTEXT | HA_SPATIAL))))
+           !(key_info->flags & (HA_FULLTEXT | HA_SPATIAL))) &&
+          (key_info->algorithm != HA_KEY_ALG_LONG_HASH ||
+           key_info->algorithm == HA_KEY_ALG_LONG_HASH && key_part->length))
       {
         packet->append_parenthesized((long) key_part->length /
                                       key_part->field->charset()->mbmaxlen);
@@ -6615,7 +6617,9 @@ static int get_schema_stat_record(THD *thd, TABLE_LIST *tables,
         if (!(key_info->flags & HA_FULLTEXT) &&
             (key_part->field &&
              key_part->length !=
-             show_table->s->field[key_part->fieldnr-1]->key_length()))
+             show_table->s->field[key_part->fieldnr-1]->key_length()) &&
+          (key_info->algorithm != HA_KEY_ALG_LONG_HASH ||
+           key_info->algorithm == HA_KEY_ALG_LONG_HASH && key_part->length))
         {
           table->field[10]->store((longlong) key_part->length /
                                   key_part->field->charset()->mbmaxlen, TRUE);

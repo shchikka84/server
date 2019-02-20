@@ -1094,11 +1094,11 @@ show create table t1;
 Table	Create Table
 t1	CREATE TABLE `t1` (
   `a` blob DEFAULT NULL,
-  UNIQUE KEY `a` (`a`(65535)) USING HASH
+  UNIQUE KEY `a` (`a`) USING HASH
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 show keys from t1;
 Table	Non_unique	Key_name	Seq_in_index	Column_name	Collation	Cardinality	Sub_part	Packed	Null	Index_type	Comment	Index_comment
-t1	0	a	1	a	A	NULL	65535	NULL	YES	HASH		
+t1	0	a	1	a	A	NULL	NULL	NULL	YES	HASH		
 drop table t1;
 #Now with multiple keys;
 create table t1(a blob , b blob, c blob , d blob , e int);
@@ -1130,16 +1130,16 @@ t1	CREATE TABLE `t1` (
   `c` blob DEFAULT NULL,
   `d` blob DEFAULT NULL,
   `e` int(11) DEFAULT NULL,
-  UNIQUE KEY `a` (`a`(65535),`c`(65535)) USING HASH,
-  UNIQUE KEY `b` (`b`(65535),`d`(65535)) USING HASH,
+  UNIQUE KEY `a` (`a`,`c`) USING HASH,
+  UNIQUE KEY `b` (`b`,`d`) USING HASH,
   UNIQUE KEY `e` (`e`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 show keys from t1;
 Table	Non_unique	Key_name	Seq_in_index	Column_name	Collation	Cardinality	Sub_part	Packed	Null	Index_type	Comment	Index_comment
-t1	0	a	1	a	A	NULL	65535	NULL	YES	HASH		
-t1	0	a	2	c	A	NULL	65535	NULL	YES	HASH		
-t1	0	b	1	b	A	NULL	65535	NULL	YES	HASH		
-t1	0	b	2	d	A	NULL	65535	NULL	YES	HASH		
+t1	0	a	1	a	A	NULL	NULL	NULL	YES	HASH		
+t1	0	a	2	c	A	NULL	NULL	NULL	YES	HASH		
+t1	0	b	1	b	A	NULL	NULL	NULL	YES	HASH		
+t1	0	b	2	d	A	NULL	NULL	NULL	YES	HASH		
 t1	0	e	1	e	A	0	NULL	NULL	YES	BTREE		
 drop table t1;
 #visibility of db_row_hash 
@@ -1393,7 +1393,7 @@ show create table t1;
 Table	Create Table
 t1	CREATE TABLE `t1` (
   `a` blob DEFAULT NULL,
-  UNIQUE KEY `a` (`a`(65535)) USING HASH
+  UNIQUE KEY `a` (`a`) USING HASH
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 drop table t1;
 #64 indexes

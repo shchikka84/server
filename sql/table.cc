@@ -1197,7 +1197,7 @@ bool parse_vcol_defs(THD *thd, MEM_ROOT *mem_root, TABLE *table,
                       new (mem_root)Item_field(thd, keypart->field),
                       new (mem_root) Item_int(thd, length));
           list_item->fix_fields(thd, NULL);
-          keypart->key_part_flag |= HA_PART_KEY_SEG;
+         // keypart->key_part_flag |= HA_PART_KEY_SEG;
         }
         field_list->push_back(list_item, mem_root);
       }
@@ -2558,7 +2558,9 @@ int TABLE_SHARE::init_from_binary_frm_image(THD *thd, bool write,
           }
           share->ext_key_parts+= keyinfo->ext_key_parts;
         }
-        if (new_key_part != keyinfo->key_part)
+        if (new_key_part != keyinfo->key_part &&
+        /* Dont override hash_keypart */
+                !(new_key_part->field->flags & LONG_UNIQUE_HASH_FIELD))
 	{
           memmove(new_key_part, keyinfo->key_part,
                   sizeof(KEY_PART_INFO) * keyinfo->ext_key_parts);

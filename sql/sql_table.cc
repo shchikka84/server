@@ -4123,6 +4123,10 @@ mysql_prepare_create_table(THD *thd, HA_CREATE_INFO *create_info,
 	  }
       else
         key_part_info->length= (uint16) key_part_length;
+      if (is_hash_field_needed &&
+           (key_part_info->length == sql_field->char_length * sql_field->charset->mbmaxlen ||
+            key_part_info->length == (1<<16) -1))
+        key_part_info->length= 0;
       /* Use packed keys for long strings on the first column */
       if (!((*db_options) & HA_OPTION_NO_PACK_KEYS) &&
           !((create_info->table_options & HA_OPTION_NO_PACK_KEYS)) &&
@@ -8389,6 +8393,7 @@ mysql_prepare_alter_table(THD *thd, TABLE *table,
       key_part_length= key_part->length;
       if (cfield->field)			// Not new field
       {
+        /*
         if (key_info->algorithm == HA_KEY_ALG_LONG_HASH)
         {
           Field *fld= cfield->field;
@@ -8396,7 +8401,6 @@ mysql_prepare_alter_table(THD *thd, TABLE *table,
                       && fld->max_data_length() != key_part->length)
             cfield->length= cfield->char_length= key_part->length;
         }
-        /*
           If the field can't have only a part used in a key according to its
           new type, or should not be used partially according to its
           previous type, or the field length is less than the key part
