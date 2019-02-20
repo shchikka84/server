@@ -2560,7 +2560,8 @@ int TABLE_SHARE::init_from_binary_frm_image(THD *thd, bool write,
         }
         if (new_key_part != keyinfo->key_part &&
         /* Dont override hash_keypart */
-                !(new_key_part->field->flags & LONG_UNIQUE_HASH_FIELD))
+                !(new_key_part->field &&
+                   new_key_part->field->flags & LONG_UNIQUE_HASH_FIELD))
 	{
           memmove(new_key_part, keyinfo->key_part,
                   sizeof(KEY_PART_INFO) * keyinfo->ext_key_parts);
