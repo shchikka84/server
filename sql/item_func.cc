@@ -1730,7 +1730,6 @@ longlong  Item_func_hash::val_int()
   DBUG_EXECUTE_IF("same_long_unique_hash", return 9;);
   unsigned_flag= true;
   ulong nr1= 1,nr2= 4;
-  CHARSET_INFO *cs;
   String * str;
   for(uint i= 0;i<arg_count;i++)
   {
