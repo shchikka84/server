@@ -1,5 +1,9 @@
 --source include/have_innodb.inc
 
+#
+# MDEV-371 Unique indexes for blobs
+#
+
 create table t1(a blob unique) engine= InnoDB;
 insert into t1 values('RUC');
 --error ER_DUP_ENTRY
@@ -33,7 +37,6 @@ insert into t1 values('RC');
 commit;
 set  transaction isolation level READ COMMITTED;
 start transaction;
---error ER_DUP_ENTRY
 --error ER_LOCK_WAIT_TIMEOUT
 insert into t1 values ('RC');
 commit;
@@ -47,7 +50,6 @@ insert into t1 values('RR');
 commit;
 set  transaction isolation level REPEATABLE READ;
 start transaction;
---error ER_DUP_ENTRY
 --error ER_LOCK_WAIT_TIMEOUT
 insert into t1 values ('RR');
 
@@ -60,7 +62,6 @@ insert into t1 values('S');
 commit;
 set  transaction isolation level SERIALIZABLE;
 start transaction;
---error ER_DUP_ENTRY
 --error ER_LOCK_WAIT_TIMEOUT
 insert into t1 values ('S');
 commit;
