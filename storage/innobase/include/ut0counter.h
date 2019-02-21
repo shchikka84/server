@@ -1,7 +1,7 @@
 /*****************************************************************************
 
 Copyright (c) 2012, 2015, Oracle and/or its affiliates. All Rights Reserved.
-Copyright (c) 2017, 2018, MariaDB Corporation.
+Copyright (c) 2017, 2019, MariaDB Corporation.
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -106,14 +106,13 @@ struct ib_counter_t {
 
 private:
 	/** Atomic which occupies whole CPU cache line */
-	union ib_counter_element_t {
-		std::atomic<Type> value;
-		byte padding[CACHE_LINE_SIZE];
+	struct ib_counter_element_t {
+		MY_ALIGNED(CACHE_LINE_SIZE) std::atomic<Type> value;
 	};
 	static_assert(sizeof(ib_counter_element_t) == CACHE_LINE_SIZE, "");
 
 	/** Array of counter elements */
-	MY_ALIGNED(CACHE_LINE_SIZE) ib_counter_element_t m_counter[N];
+	ib_counter_element_t m_counter[N];
 };
 
 #endif /* ut0counter_h */
