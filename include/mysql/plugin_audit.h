@@ -146,6 +146,35 @@ struct mysql_event_table
   unsigned long long query_id;
 };
 
+/*
+  AUDIT CLASS : QUERY_REWRITE
+*/
+
+#define MYSQL_AUDIT_QUERY_REWRITE_CLASS 16
+#define MYSQL_AUDIT_QUERY_REWRITE_CLASSMASK (1 << MYSQL_AUDIT_QUERY_REWRITE_CLASS)
+#define MYSQL_AUDIT_QUERY_REWRITE_QUERY  0
+#define MYSQL_AUDIT_QUERY_REWRITE_SLOW   1
+#define MYSQL_AUDIT_QUERY_REWRITE_BINLOG 2
+#define MYSQL_AUDIT_QUERY_REWRITE_FIRST_STATEMENT 1 << 0
+#define MYSQL_AUDIT_QUERY_REWRITE_FOR_EXECUTE     1 << 1
+#define MYSQL_AUDIT_QUERY_REWRITE_FOR_GENERAL_LOG 1 << 2
+#define MYSQL_AUDIT_QUERY_REWRITE_FOR_SLOW_LOG    1 << 3
+#define MYSQL_AUDIT_QUERY_REWRITE_FOR_BINARY_LOG  1 << 4
+#define MYSQL_AUDIT_QUERY_REWRITE_SKIP_BINARY_LOG 1 << 5
+
+struct mysql_event_query_rewrite
+{
+  unsigned int event_subclass;
+  unsigned int flags;
+  char *query;
+  char *rewritten_query;
+  const char *found_semicolon;
+  unsigned int query_length;
+  unsigned int rewritten_query_length;
+  const struct charset_info_st *query_charset;
+  unsigned long long query_id;
+};
+
 /*************************************************************************
   Here we define the descriptor structure, that is referred from
   st_mysql_plugin.
